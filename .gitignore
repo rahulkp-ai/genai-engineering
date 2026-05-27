@@ -1,0 +1,91 @@
+# =============================================================
+#  genai-engineering — .gitignore
+# =============================================================
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+wheels/
+
+# ── Virtual Environments ──────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# ── Environment Variables (NEVER commit secrets) ──────────────
+.env
+.env.local
+.env.*.local
+*.secret
+
+# ── Jupyter Notebooks ─────────────────────────────────────────
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# ── ML / AI Artifacts ─────────────────────────────────────────
+# Model weights — too large for git, use HuggingFace Hub or DVC
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.keras
+*.onnx
+*.tflite
+
+# Training outputs
+runs/
+outputs/
+checkpoints/
+logs/
+wandb/
+mlruns/
+lightning_logs/
+
+# Datasets — use DVC or document download instructions instead
+data/raw/
+data/processed/
+*.csv
+*.parquet
+*.jsonl
+*.arrow
+*.feather
+
+# Vector store indexes
+chroma_db/
+faiss_index/
+*.index
+*.faiss
+
+# ── IDEs & Editors ────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Testing & Coverage ────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ── Misc ──────────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak
+tmp/
+temp/

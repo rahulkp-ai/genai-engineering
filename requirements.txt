@@ -1,0 +1,62 @@
+# =============================================================
+#  genai-engineering — requirements.txt
+#  Pinned versions for reproducibility.
+#  Install: pip install -r requirements.txt
+# =============================================================
+
+# ── Core Scientific Stack ─────────────────────────────────────
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.0
+matplotlib==3.9.0
+seaborn==0.13.2
+
+# ── Machine Learning ──────────────────────────────────────────
+scikit-learn==1.5.0
+
+# ── Deep Learning ─────────────────────────────────────────────
+# CPU-only by default; replace with torch==2.3.0+cu121 for CUDA
+torch==2.3.0
+torchvision==0.18.0
+keras==3.3.3
+
+# ── Hugging Face Ecosystem ────────────────────────────────────
+transformers==4.41.2
+datasets==2.19.2
+tokenizers==0.19.1
+accelerate==0.30.1
+peft==0.11.1                 # LoRA / QLoRA / PEFT methods
+trl==0.9.4                   # RLHF, DPO, PPO trainers
+
+# ── GenAI / LLM Application Stack ────────────────────────────
+langchain==0.2.5
+langchain-community==0.2.5
+langchain-core==0.2.9
+openai==1.35.3
+huggingface-hub==0.23.4
+
+# ── Vector Databases ──────────────────────────────────────────
+chromadb==0.5.3
+faiss-cpu==1.8.0
+
+# ── NLP Utilities ─────────────────────────────────────────────
+nltk==3.8.1
+spacy==3.7.5
+
+# ── Web / API / Deployment ────────────────────────────────────
+flask==3.0.3
+fastapi==0.111.0
+uvicorn==0.30.1
+gradio==4.36.1
+requests==2.32.3
+
+# ── Data Processing ───────────────────────────────────────────
+pypdf==4.2.0
+python-dotenv==1.0.1
+
+# ── Dev & Code Quality ────────────────────────────────────────
+jupyter==1.0.0
+ipykernel==6.29.4
+pytest==8.2.2
+black==24.4.2
+ruff==0.4.9
