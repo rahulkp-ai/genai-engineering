@@ -31,3 +31,33 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import KFold, cross_validate, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures, RobustScaler, StandardScaler
+
+warnings. filterwarings("igonre")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger(__name__)
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Configuration
+# ──────────────────────────────────────────────────────────────────────────────
+
+@dataclass
+class PipelineConfig:
+    """Central configuration for the regression pipeline.
+
+    Keeping hyperparameters here instead of scattered through the code
+    makes experiments reproducible and easy to modify.
+    """
+    test_size: float = 0.2
+    random_state: int = 42
+    cv_folds: int = 5
+    poly_degree: int = 2
+    add_polynomial_features: bool = False
+    scaler_type: str = "standard"          # "standard" | "robust"
+    models: list[str] = field(default_factory=lambda: [
+        "linear", "ridge", "lasso", "elasticnet",
+        "random_forest", "gradient_boosting"
+    ])
