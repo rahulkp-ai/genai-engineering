@@ -61,3 +61,45 @@ class PipelineConfig:
         "linear", "ridge", "lasso", "elasticnet",
         "random_forest", "gradient_boosting"
     ])
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Data Loading
+# ──────────────────────────────────────────────────────────────────────────────
+
+def load_data(
+    filepath: Optional[str] = None,
+    target_column: Optional[str] = None,
+) -> tuple[pd.DataFrame, pd.Series]:
+    """Load dataset from file or fall back to California Housing benchmark.
+
+    Args:
+        filepath: Path to a CSV file. If None, uses California Housing dataset.
+        target_column: Name of the target column in the CSV.
+
+    Returns:
+        X: Feature DataFrame.
+        y: Target Series.
+    """
+    if filepath is not None:
+        logger.info("Loading data from %s", filepath)
+        df = pd.read_csv(filepath)
+        if target_column is None:
+            raise ValueError("target_column must be specified when loading from file.")
+        X = df.drop(columns=[target_column])
+        y = df[target_column]
+        logger.info("Loaded %d rows, %d features", len(df), X.shape[1])
+        return X, y
+
+    logger.info("No filepath provided — using California Housing benchmark dataset")
+    try:
+        housing = fetch_california_housing(as_frame=True)
+        X = housing.data
+        y = housing.target
+        logger.info("Dataset shape: %s | Target: MedHouseVal", X.shape)
+    except Exception:
+        logger.warning("California Housing download failed — falling back to Diabetes dataset")
+        diabetes = load_diabetes(as_frame=True)
+        X = diabetes.data
+        y = diabetes.target
+        logger.info("Dataset shape: %s | Target: disease progression", X.shape)
+    return X, y
