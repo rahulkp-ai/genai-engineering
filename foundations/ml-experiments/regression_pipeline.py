@@ -103,3 +103,55 @@ def load_data(
         y = diabetes.target
         logger.info("Dataset shape: %s | Target: disease progression", X.shape)
     return X, y
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Preprocessing
+# ──────────────────────────────────────────────────────────────────────────────
+
+def build_preprocessor(
+    numeric_features: list[str],
+    config: PipelineConfig,
+) -> ColumnTransformer:
+    """Build a ColumnTransformer for numeric preprocessing.
+
+    Uses RobustScaler when data has significant outliers (interquartile-based),
+    StandardScaler otherwise. Polynomial features are optional.
+
+    Args:
+        numeric_features: List of numeric column names.
+        config: PipelineConfig instance.
+
+    Returns:
+        Fitted-ready ColumnTransformer.
+    """
+    scaler = (
+        RobustScaler()
+        if config.scaler_type == "robust"
+        else StandardScaler()
+    )
+
+    if config.add_polynomial_features:
+        numeric_transformer = Pipeline(steps=[
+            ("scaler", scaler),
+            ("poly", PolynomialFeatures(
+                degree=config.poly_degree,
+                include_bias=False,
+                interaction_only=False,
+            )),
+        ])
+        logger.info(
+            "Preprocessor: %s + PolynomialFeatures(degree=%d)",
+            config.scaler_type,
+            config.poly_degree,
+        )
+    else:
+        numeric_transformer = Pipeline(steps=[("scaler", scaler)])
+        logger.info("Preprocessor: %s scaler", config.scaler_type)
+
+    preprocessor = ColumnTransformer(
+        transformers=[("num", numeric_transformer, numeric_features)],
+        remainder="drop",
+    )
+    return preprocessor
+
