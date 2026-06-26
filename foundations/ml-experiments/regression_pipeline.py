@@ -155,3 +155,41 @@ def build_preprocessor(
     )
     return preprocessor
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Model Registry
+# ──────────────────────────────────────────────────────────────────────────────
+
+def get_models(config: PipelineConfig) -> dict:
+    """Return a dictionary of instantiated models keyed by name.
+
+    Adding a new model means adding one entry here — no other code changes.
+
+    Args:
+        config: PipelineConfig instance (used for random_state seeding).
+
+    Returns:
+        Dict mapping model name → sklearn estimator instance.
+    """
+    registry = {
+        "linear": LinearRegression(),
+        "ridge": Ridge(alpha=1.0),
+        "lasso": Lasso(alpha=0.1, max_iter=5000),
+        "elasticnet": ElasticNet(alpha=0.1, l1_ratio=0.5, max_iter=5000),
+        "random_forest": RandomForestRegressor(
+            n_estimators=200,
+            max_depth=None,
+            min_samples_split=5,
+            random_state=config.random_state,
+            n_jobs=-1,
+        ),
+        "gradient_boosting": GradientBoostingRegressor(
+            n_estimators=200,
+            learning_rate=0.05,
+            max_depth=4,
+            subsample=0.8,
+            random_state=config.random_state,
+        ),
+    }
+    selected = {k: v for k, v in registry.items() if k in config.models}
+    logger.info("Models selected: %s", list(selected.keys()))
+    return selected
